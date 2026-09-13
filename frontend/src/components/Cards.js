@@ -1,5 +1,7 @@
 import Link from "next/link";
+import Icon from "./Icons";
 import { Cloud } from "./Decor";
+import { Reveal } from "./Motion";
 
 export function SectionCaption({ title, href, linkText = "Hamısına bax" }) {
   return (
@@ -13,6 +15,9 @@ export function SectionCaption({ title, href, linkText = "Hamısına bax" }) {
 export function DoctorCard({ doctor }) {
   return (
     <Link href={`/doctors/${doctor.id}`} className="item">
+      {doctor.rating && (
+        <span className="rating-badge"><Icon name="star" size={13} fill="currentColor" />{doctor.rating}</span>
+      )}
       <img src={doctor.photo} alt={doctor.name} loading="lazy" />
       <div className="item-text">
         <h4>{doctor.name}</h4>
@@ -28,29 +33,32 @@ export function DoctorCard({ doctor }) {
 
 export function NewsCard({ item }) {
   return (
-    <div className="item">
+    <Link href={`/news/${item.id}`} className="item">
       <img src={item.image} alt={item.title} loading="lazy" />
       <div className="item-text">
+        {item.category && <span className="tag">{item.category}</span>}
         <h4>{item.title}</h4>
         <h5>{new Date(item.date).toLocaleDateString("az-AZ")}</h5>
         <p style={{ color: "#484848", fontSize: 14, lineHeight: 1.5 }}>{item.excerpt}</p>
       </div>
-    </div>
+    </Link>
   );
 }
 
 export function DepartmentsMosaic({ departments, limit = 10 }) {
   return (
     <div className="mosaic">
-      {departments.slice(0, limit).map((d) => (
-        <Link href={`/departments/${d.slug}`} className="tile" key={d.id}>
-          <img src={d.image} alt={d.name} loading="lazy" />
-          <div className="overlay" />
-          <div className="tourcap">
-            <h3>{d.name}</h3>
-            <p>{d.tagline}</p>
-          </div>
-        </Link>
+      {departments.slice(0, limit).map((d, i) => (
+        <Reveal key={d.id} effect="zoom" delay={i * 70}>
+          <Link href={`/departments/${d.slug}`} className="tile">
+            <img src={d.image} alt={d.name} loading="lazy" />
+            <div className="overlay" />
+            <div className="tourcap">
+              <h3>{d.name}</h3>
+              <p>{d.tagline}</p>
+            </div>
+          </Link>
+        </Reveal>
       ))}
     </div>
   );

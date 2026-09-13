@@ -54,7 +54,7 @@ button, input, select, textarea { font-family: inherit; }
 .header.sticky .logo-text span, .header.pageNav .logo-text span { color: #fff; }
 
 .nav { display: flex; align-items: center; gap: 4px; list-style: none; margin: 0; padding: 0; }
-.nav a { color: var(--blue); font-weight: 500; font-size: 16px; padding: 0 10px; position: relative; transition: color 500ms; }
+.nav a { color: var(--blue); font-weight: 500; font-size: 15px; padding: 0 8px; position: relative; transition: color 500ms; }
 .header.sticky .nav a, .header.pageNav .nav a { color: #fff; }
 .nav a span { position: relative; }
 .nav a span::after {
@@ -186,7 +186,7 @@ section.block { padding: 40px 0; }
 .departments .deco { position: absolute; pointer-events: none; opacity: .9; }
 .mosaic { display: grid; gap: 7px; grid-template-columns: 1.45fr 1fr 1fr 1fr; grid-auto-rows: 184px; position: relative; z-index: 2; }
 .mosaic .tile { position: relative; border-radius: 24px; overflow: hidden; display: block; }
-.mosaic .tile:first-child { grid-row: span 3; }
+.mosaic > :first-child { grid-row: span 3; }
 .mosaic .tile img { width: 100%; height: 100%; object-fit: cover; transition: transform 600ms; }
 .mosaic .tile:hover img { transform: scale(1.05); }
 .mosaic .overlay { position: absolute; left: 0; right: 0; bottom: 0; height: 55%; background: linear-gradient(180deg, rgba(0, 118, 129, 0), #040404); transition: opacity 300ms; opacity: .85; }
@@ -313,7 +313,7 @@ footer .made { text-align: right; }
   .partnership { width: 72%; padding-left: 70px; padding-right: 100px; }
   .order .lady { width: 30%; }
 }
-@media (max-width: 1100px) {
+@media (max-width: 1240px) {
   .burger { display: block; }
   .nav {
     position: fixed; top: 0; right: 0; height: 100vh; width: min(340px, 85vw); background: linear-gradient(180deg, var(--blue), #2a5bc4);
@@ -337,7 +337,7 @@ footer .made { text-align: right; }
   .related .card, .related .card.alive { margin-top: 0; height: 260px; width: 200px; }
   .dots { display: none; }
   .mosaic { grid-template-columns: repeat(2, 1fr); }
-  .mosaic .tile:first-child { grid-row: span 2; }
+  .mosaic > :first-child { grid-row: span 2; }
   .order .lady { display: none; }
   .partnership { width: 100%; padding: 30px 50px 60px; }
   .doctor-detail, .two-col { grid-template-columns: 1fr; }

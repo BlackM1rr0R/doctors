@@ -3,16 +3,31 @@ import { db, save, nextId } from "../db.js";
 
 const router = Router();
 
-router.get("/settings", (req, res) => res.json(db().settings));
-router.get("/slides", (req, res) => res.json(db().slides));
-router.get("/services", (req, res) => res.json(db().services));
+// Read-only content collections exposed as-is
+const COLLECTIONS = ["settings", "slides", "services", "departments", "news", "about", "packages", "testimonials", "faqs", "partners"];
+for (const name of COLLECTIONS) {
+  router.get(`/${name}`, (req, res) => res.json(db()[name]));
+}
 
-router.get("/departments", (req, res) => res.json(db().departments));
 router.get("/departments/:slug", (req, res) => {
   const department = db().departments.find((d) => d.slug === req.params.slug);
   if (!department) return res.status(404).json({ message: "Şöbə tapılmadı" });
   const doctors = db().doctors.filter((d) => d.departmentSlug === department.slug);
   res.json({ ...department, doctors });
+});
+
+router.get("/services/:slug", (req, res) => {
+  const service = db().services.find((s) => s.slug === req.params.slug);
+  if (!service) return res.status(404).json({ message: "Xidmət tapılmadı" });
+  const slugs = service.departmentSlugs || [];
+  const doctors = db().doctors.filter((d) => slugs.includes(d.departmentSlug));
+  res.json({ ...service, doctors });
+});
+
+router.get("/news/:id", (req, res) => {
+  const item = db().news.find((n) => n.id === Number(req.params.id));
+  if (!item) return res.status(404).json({ message: "Xəbər tapılmadı" });
+  res.json(item);
 });
 
 router.get("/doctors", (req, res) => {
@@ -33,8 +48,6 @@ router.get("/doctors/:id", (req, res) => {
   if (!doctor) return res.status(404).json({ message: "Həkim tapılmadı" });
   res.json(doctor);
 });
-
-router.get("/news", (req, res) => res.json(db().news));
 
 function required(body, fields) {
   return fields.filter((f) => !String(body?.[f] ?? "").trim());

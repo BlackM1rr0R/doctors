@@ -1,6 +1,7 @@
 import Link from "next/link";
 import PageBanner from "@/components/PageBanner";
 import { DoctorCard } from "@/components/Cards";
+import { Reveal } from "@/components/Motion";
 import { getData } from "@/lib/api";
 
 export const metadata = { title: "Həkimlər — Medika Klinika" };
@@ -37,7 +38,9 @@ export default async function DoctorsPage({ searchParams }) {
 
           {doctors.length ? (
             <div className="grid">
-              {doctors.map((d) => <DoctorCard key={d.id} doctor={d} />)}
+              {doctors.map((d, i) => (
+                <Reveal key={d.id} delay={(i % 4) * 100}><DoctorCard doctor={d} /></Reveal>
+              ))}
             </div>
           ) : (
             <div className="empty">Həkim tapılmadı</div>

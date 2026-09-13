@@ -4,6 +4,7 @@ import { useRef } from "react";
 import Link from "next/link";
 import Icon from "./Icons";
 import { DoctorCard } from "./Cards";
+import { Reveal } from "./Motion";
 
 export default function DoctorsCarousel({ title, doctors }) {
   const track = useRef(null);
@@ -25,7 +26,11 @@ export default function DoctorsCarousel({ title, doctors }) {
         </div>
       </div>
       <div className="carousel-track" ref={track}>
-        {doctors.map((d) => <DoctorCard key={d.id} doctor={d} />)}
+        {doctors.map((d, i) => (
+          <Reveal key={d.id} delay={Math.min(i, 4) * 100}>
+            <DoctorCard doctor={d} />
+          </Reveal>
+        ))}
       </div>
     </div>
   );

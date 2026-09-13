@@ -11,6 +11,8 @@ const NAV = [
   { href: "/doctors", label: "Həkimlər" },
   { href: "/services", label: "Xidmətlər" },
   { href: "/departments", label: "Şöbələr" },
+  { href: "/prices", label: "Qiymətlər" },
+  { href: "/news", label: "Xəbərlər" },
   { href: "/appointment", label: "Onlayn qəbul" },
   { href: "/contact", label: "Əlaqə" },
 ];

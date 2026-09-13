@@ -1,7 +1,9 @@
 import { Jost } from "next/font/google";
 import "./globals.css";
+import "./effects.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { ScrollProgress, BackToTop } from "@/components/Motion";
 import { getData, DEFAULT_SETTINGS } from "@/lib/api";
 
 // Jost is a free geometric typeface close to Futura used by the reference design
@@ -18,9 +20,11 @@ export default async function RootLayout({ children }) {
   return (
     <html lang="az" className={jost.variable}>
       <body>
+        <ScrollProgress />
         <Header settings={settings} />
         <main>{children}</main>
         <Footer settings={settings} />
+        <BackToTop />
       </body>
     </html>
   );

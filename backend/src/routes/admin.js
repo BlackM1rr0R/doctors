@@ -32,10 +32,10 @@ router.delete("/appointments/:id", async (req, res) => {
 router.get("/messages", (req, res) => res.json([...db().messages].reverse()));
 
 // Generic CRUD for content collections
-const DOCTOR_FIELDS = ["name", "specialty", "departmentSlug", "experience", "photo", "bio", "education", "schedule", "price", "featured"];
-const DEPARTMENT_FIELDS = ["slug", "name", "tagline", "image", "description"];
-const SERVICE_FIELDS = ["title", "icon", "description"];
-const NEWS_FIELDS = ["title", "date", "image", "excerpt"];
+const DOCTOR_FIELDS = ["name", "specialty", "departmentSlug", "experience", "photo", "bio", "education", "schedule", "price", "featured", "rating", "reviewsCount", "languages", "achievements"];
+const DEPARTMENT_FIELDS = ["slug", "name", "tagline", "image", "description", "services", "prices"];
+const SERVICE_FIELDS = ["slug", "title", "icon", "image", "description", "details", "features", "priceFrom", "departmentSlugs"];
+const NEWS_FIELDS = ["title", "date", "category", "image", "excerpt", "content"];
 
 function crud(collection, fields) {
   const pick = (body) => Object.fromEntries(fields.filter((f) => f in (body || {})).map((f) => [f, body[f]]));
@@ -67,5 +67,9 @@ crud("doctors", DOCTOR_FIELDS);
 crud("departments", DEPARTMENT_FIELDS);
 crud("services", SERVICE_FIELDS);
 crud("news", NEWS_FIELDS);
+crud("testimonials", ["name", "role", "text", "rating", "doctorId"]);
+crud("faqs", ["question", "answer", "category"]);
+crud("packages", ["name", "price", "oldPrice", "features", "popular"]);
+crud("partners", ["name"]);
 
 export default router;

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Icon from "./Icons";
 import { Cloud, CloudBank } from "./Decor";
@@ -17,13 +17,21 @@ export default function Hero({ slides, services }) {
     return () => clearTimeout(t);
   }, [active, count]);
 
+  // Mouse parallax: expose cursor offset (-0.5..0.5) as CSS variables consumed in effects.css
+  const heroRef = useRef(null);
+  const onMouseMove = (e) => {
+    const r = heroRef.current.getBoundingClientRect();
+    heroRef.current.style.setProperty("--mx", ((e.clientX - r.left) / r.width - 0.5).toFixed(3));
+    heroRef.current.style.setProperty("--my", ((e.clientY - r.top) / r.height - 0.5).toFixed(3));
+  };
+
   if (!count) return null;
   const slide = slides[active];
   // Side cards start at the active slide, like the original related carousel
   const ordered = slides.map((_, i) => slides[(active + i) % count]);
 
   return (
-    <section className="hero">
+    <section className="hero" ref={heroRef} onMouseMove={onMouseMove}>
       <div className="clouds">
         <Cloud width={220} style={{ top: 110, left: "6%" }} />
         <Cloud width={320} style={{ top: 90, left: "62%", animationDuration: "55s" }} />
@@ -44,7 +52,7 @@ export default function Hero({ slides, services }) {
 
       <div className="featuresAvia">
         {services.slice(0, 5).map((s) => (
-          <Link href="/services" className="feature" key={s.id}>
+          <Link href={s.slug ? `/services/${s.slug}` : "/services"} className="feature" key={s.id}>
             <Icon name={s.icon} />
             <span>{s.title}</span>
           </Link>
@@ -66,6 +74,25 @@ export default function Hero({ slides, services }) {
             </div>
           </div>
         ))}
+      </div>
+
+      {[
+        { top: "30%", left: "36%", size: 26, delay: "0s" },
+        { top: "62%", left: "48%", size: 18, delay: "1.5s" },
+        { top: "14%", left: "52%", size: 22, delay: "3s" },
+      ].map((c) => (
+        <svg key={c.top} className="float-cross" style={{ top: c.top, left: c.left, animationDelay: c.delay }} width={c.size} height={c.size} viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M9 2h6v7h7v6h-7v7H9v-7H2V9h7z" fill="currentColor" />
+        </svg>
+      ))}
+
+      <div className="hero-badge" style={{ left: "53%", top: "76%" }}>
+        <span className="live-dot pulse-ring" />
+        <div><b>24/7 Təcili yardım</b>Həmişə yanınızdayıq</div>
+      </div>
+      <div className="hero-badge" style={{ right: "4%", top: "13%", animationDelay: "1.2s" }}>
+        <span className="ico"><Icon name="star" size={18} fill="currentColor" /></span>
+        <div><b>4.9 / 5</b>2 400+ pasiyent rəyi</div>
       </div>
 
       <div className="dots">

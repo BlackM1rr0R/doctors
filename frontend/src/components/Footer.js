@@ -1,5 +1,19 @@
+import Link from "next/link";
 import Icon from "./Icons";
 import { Cloud } from "./Decor";
+
+const FOOTER_LINKS = [
+  { href: "/about", label: "Haqqımızda" },
+  { href: "/doctors", label: "Həkimlər" },
+  { href: "/departments", label: "Şöbələr" },
+  { href: "/news", label: "Xəbərlər" },
+];
+const PATIENT_LINKS = [
+  { href: "/appointment", label: "Onlayn qəbul" },
+  { href: "/prices", label: "Qiymətlər" },
+  { href: "/services", label: "Xidmətlər" },
+  { href: "/contact", label: "Əlaqə" },
+];
 
 export default function Footer({ settings }) {
   return (
@@ -27,6 +41,32 @@ export default function Footer({ settings }) {
           </ul>
         </div>
         <Cloud className="cloud" width={360} />
+      </section>
+
+      <section className="footer-links">
+        <div className="container cols">
+          <div>
+            <h4>{settings.clinicName}</h4>
+            <p>Müasir avadanlıq, təcrübəli həkimlər və fərdi yanaşma ilə sağlamlığınızın keşiyindəyik.</p>
+          </div>
+          <div>
+            <h4>Keçidlər</h4>
+            <ul>
+              {FOOTER_LINKS.map((l) => <li key={l.href}><Link href={l.href}>{l.label}</Link></li>)}
+            </ul>
+          </div>
+          <div>
+            <h4>Pasiyentlər üçün</h4>
+            <ul>
+              {PATIENT_LINKS.map((l) => <li key={l.href}><Link href={l.href}>{l.label}</Link></li>)}
+            </ul>
+          </div>
+          <div>
+            <h4>İş saatları</h4>
+            <p>{settings.workingHours}</p>
+            <p style={{ marginTop: 10 }}>Təcili yardım: <b style={{ color: "#fff" }}>24/7</b></p>
+          </div>
+        </div>
       </section>
 
       <footer>

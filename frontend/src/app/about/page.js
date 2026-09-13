@@ -1,41 +1,60 @@
 import PageBanner from "@/components/PageBanner";
-import { getData } from "@/lib/api";
+import DoctorsCarousel from "@/components/DoctorsCarousel";
+import { StatsBand, FeaturesSection, SectionHead, Timeline, TestimonialsSection, PartnersMarquee, CtaBanner, CheckList } from "@/components/Sections";
+import { Reveal } from "@/components/Motion";
+import { getData, DEFAULT_SETTINGS } from "@/lib/api";
 
 export const metadata = { title: "Haqqımızda — Medika Klinika" };
 
 export default async function AboutPage() {
-  const [doctors, departments] = await Promise.all([getData("/doctors"), getData("/departments")]);
+  const [doctors, about, testimonials, partners, settings] = await Promise.all([
+    getData("/doctors"),
+    getData("/about", {}),
+    getData("/testimonials"),
+    getData("/partners"),
+    getData("/settings", DEFAULT_SETTINGS),
+  ]);
 
   return (
     <>
       <PageBanner title="Haqqımızda" subtitle="Sağlamlığınız etibarlı əllərdə" crumbs={[{ label: "Haqqımızda" }]} />
-      <section className="content">
-        <div className="container">
-          <div className="two-col">
-            <div className="prose">
-              <h2 style={{ fontSize: 32, fontWeight: 600, marginBottom: 16 }}>Medika Klinika</h2>
-              <p>
-                Klinikamız müasir tibbi avadanlıqlar və təcrübəli həkim heyəti ilə pasiyentlərə yüksək keyfiyyətli
-                diaqnostika və müalicə xidmətləri göstərir.
-              </p>
-              <p>
-                Məqsədimiz hər bir pasiyentə fərdi yanaşma, şəffaf qiymət siyasəti və rahat xidmət təqdim etməkdir.
-                Onlayn qeydiyyat sistemi ilə növbə gözləmədən istədiyiniz həkimin qəbuluna yazıla bilərsiniz.
-              </p>
-            </div>
-            <div className="rounded-img">
-              <img src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=1000&q=80&auto=format&fit=crop" alt="Klinika" />
-            </div>
-          </div>
 
-          <div className="stats">
-            <div className="stat"><b>15+</b>il təcrübə</div>
-            <div className="stat"><b>{doctors.length || "40"}+</b>həkim</div>
-            <div className="stat"><b>{departments.length || "10"}</b>şöbə</div>
-            <div className="stat"><b>50 000+</b>məmnun pasiyent</div>
-          </div>
+      <section className="content">
+        <div className="container two-col">
+          <Reveal effect="left" className="prose">
+            <span className="tag">Biz kimik?</span>
+            <h2 style={{ fontSize: 32, fontWeight: 600, marginBottom: 16 }}>{settings.clinicName}</h2>
+            {(about.intro || []).map((p) => <p key={p}>{p}</p>)}
+            <div style={{ marginTop: 24 }}>
+              <CheckList items={about.highlights} />
+            </div>
+          </Reveal>
+          <Reveal effect="right" className="rounded-img">
+            <img src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=1000&q=80&auto=format&fit=crop" alt="Klinika" />
+          </Reveal>
         </div>
       </section>
+
+      <StatsBand stats={about.stats} />
+
+      <section className="block-lg">
+        <div className="container">
+          <SectionHead eyebrow="Tariximiz" title="İllər boyu inkişaf yolumuz" />
+          <Timeline items={about.timeline} />
+        </div>
+      </section>
+
+      <FeaturesSection className="block-lg bg-soft" eyebrow="Dəyərlərimiz" title="Bizi fərqləndirən prinsiplər" features={about.values} />
+
+      <section className="block-lg map-bg">
+        <div className="container">
+          <DoctorsCarousel title="Komandamız" doctors={doctors} />
+        </div>
+      </section>
+
+      <TestimonialsSection testimonials={testimonials} />
+      <PartnersMarquee partners={partners} />
+      <CtaBanner settings={settings} />
     </>
   );
 }

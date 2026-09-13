@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  /* config options here */
+  // Hide the floating "N" dev-tools indicator in development
+  devIndicators: false,
 };
 
 export default nextConfig;
