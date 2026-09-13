@@ -26,6 +26,24 @@ npm run dev              # http://localhost:3000
 
 Frontend API ünvanını `frontend/.env.local` faylındakı `NEXT_PUBLIC_API_URL` dəyişənindən oxuyur.
 
+## Vercel-ə deploy
+
+Kök qovluqdakı `vercel.json` hər iki servisi bir layihədə, bir domendə işlədir:
+- `/api/*` → `backend` (Express), qalan bütün yollar → `frontend` (Next.js)
+- Next.js server kodu backend-ə daxili binding ilə `BACKEND_URL` üzərindən, brauzer isə eyni domendəki `/api` ünvanına müraciət edir.
+
+Vercel-də **Environment Variables** bölməsinə əlavə edin:
+
+| Key | Qiymət |
+|---|---|
+| `JWT_SECRET` | uzun təsadüfi sətir |
+| `ADMIN_USERNAME` | admin istifadəçi adı |
+| `ADMIN_PASSWORD` | güclü şifrə |
+
+`NEXT_PUBLIC_API_URL` və `BACKEND_URL` **əlavə etməyin** — birincisi olmayanda `/api` istifadə olunur, ikincisini Vercel özü yaradır.
+
+> Vercel-də JSON bazası `/tmp/db.json`-da saxlanılır və müvəqqətidir: müraciətlər serverin yenidən başlamasında itə bilər. Real istifadə üçün Postgres (məs. Neon) kimi daimi baza qoşulmalıdır.
+
 ## Səhifələr
 
 | Yol | Təsvir |

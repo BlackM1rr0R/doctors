@@ -4,7 +4,8 @@ import { fileURLToPath } from "node:url";
 import seed from "./data/seed.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const DB_FILE = path.join(__dirname, "data", "db.json");
+// Vercel functions can only write to /tmp, which is ephemeral: data resets on cold starts
+const DB_FILE = process.env.VERCEL ? "/tmp/db.json" : path.join(__dirname, "data", "db.json");
 
 // Records submitted by visitors survive a seed upgrade; everything else is content from seed.js
 const USER_COLLECTIONS = ["appointments", "messages"];
